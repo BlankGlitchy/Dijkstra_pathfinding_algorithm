@@ -10,35 +10,28 @@ public class GraphTests {
         GraphTests TestGraph = new GraphTests();
         Graph g = TestGraph.MakeSmallGraph();
         Graph G = TestGraph.makeBigGraph();
-        Graph gn = TestGraph.negativeGraph();
 
         Vertex source = g.getVertex("A");
         Vertex end = g.getVertex("F");
         Vertex start = G.getVertex("10");
         Vertex destination = G.getVertex("6");
-        Vertex startN = gn.getVertex("-10");
-        Vertex endN = gn.getVertex("-6");
 
         Pair<Integer, Map<Vertex, Vertex>> resultsDist = g.ShortestDistance(source, end);
         Pair<Integer, Map<Vertex, Vertex>> resultsTime = g.ShortestTime(source, end);
         Pair<Integer, Map<Vertex, Vertex>> resultBig = G.ShortestDistance(start, destination);
-        Pair<Integer, Map<Vertex, Vertex>> resulNegative = gn.ShortestDistance(startN, endN);
 
 
         Vertex currentDist = end;
         Vertex currentTime = end;
         Vertex currentBig = destination;
-        Vertex currentNegative = endN;
 
         ArrayList<Vertex> PathDist = new ArrayList<>();
         ArrayList<Vertex> pathTime = new ArrayList<>();
         ArrayList<Vertex> pathBig = new ArrayList<>();
-        ArrayList<Vertex> pathNegative = new ArrayList<>();
 
         PathDist.add(end);
         pathTime.add(end);
         pathBig.add(destination);
-        pathNegative.add(endN);
 
         while ((currentDist != source) && (resultsDist.getValue().get(currentDist) != null)) {
             currentDist = resultsDist.getValue().get(currentDist);
@@ -78,21 +71,6 @@ public class GraphTests {
         for (Vertex pG : pathBig) {
             System.out.print(pG.Name);
             if (pG != destination) {
-                System.out.print("->");
-            }
-        }
-
-        while ((currentNegative != startN) && (resulNegative.getValue().get(currentNegative) != null)) {
-            currentNegative = resulNegative.getValue().get(currentNegative);
-            pathNegative.add(0, currentNegative);
-        }
-        System.out.println("");
-        System.out.println("");
-
-        System.out.println("This is shortest distance for the negative Graph:");
-        for (Vertex pN : pathNegative) {
-            System.out.print(pN.Name);
-            if (pN != endN) {
                 System.out.print("->");
             }
         }
@@ -160,42 +138,4 @@ public class GraphTests {
 
         return bigGraph;
     }
-
-    public Graph negativeGraph() {
-        Graph negativeGraph = new Graph();
-        final Vertex n1 = negativeGraph.addVertex("-1");
-        final Vertex n2 = negativeGraph.addVertex("-2");
-        final Vertex n3 = negativeGraph.addVertex("-3");
-        final Vertex n4 = negativeGraph.addVertex("-4");
-        final Vertex n5 = negativeGraph.addVertex("-5");
-        final Vertex n6 = negativeGraph.addVertex("-6");
-        final Vertex n7 = negativeGraph.addVertex("-7");
-        final Vertex n8 = negativeGraph.addVertex("-8");
-        final Vertex n9 = negativeGraph.addVertex("-9");
-        final Vertex n10 = negativeGraph.addVertex("-10");
-
-        negativeGraph.newEdgeBig(n1, n2, -10);
-        negativeGraph.newEdgeBig(n1, n4, -20);
-        negativeGraph.newEdgeBig(n1, n5, -20);
-        negativeGraph.newEdgeBig(n1, n6, -5);
-        negativeGraph.newEdgeBig(n1, n7, -15);
-        negativeGraph.newEdgeBig(n2, n3, -5);
-        negativeGraph.newEdgeBig(n2, n4, -10);
-        negativeGraph.newEdgeBig(n3, n4, -5);
-        negativeGraph.newEdgeBig(n3, n2, -15);
-        negativeGraph.newEdgeBig(n4, n5, -10);
-        negativeGraph.newEdgeBig(n5, n6, -5);
-        negativeGraph.newEdgeBig(n7, n6, -10);
-        negativeGraph.newEdgeBig(n8, n7, -5);
-        negativeGraph.newEdgeBig(n8, n2, -20);
-        negativeGraph.newEdgeBig(n8, n1, -5);
-        negativeGraph.newEdgeBig(n9, n8, -20);
-        negativeGraph.newEdgeBig(n9, n2, -15);
-        negativeGraph.newEdgeBig(n9, n10, -10);
-        negativeGraph.newEdgeBig(n10, n3, -15);
-        negativeGraph.newEdgeBig(n10, n2, -5);
-
-        return negativeGraph;
-    }
-
 }

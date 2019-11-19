@@ -63,7 +63,7 @@ public class Graph {
         // Dijkstra's algorithm for shortest distance
         for (int i = 0; i < Vertices.size(); i++) {
             // Use the function getMin on t map
-            Vertex current = getMin(t);
+            Vertex current = getMinimum(t);
             for (int j = 0; j < current.getOutEdges().size(); j++) {
                 // takes the current and the current outdeges and multiply if that is smaller than the outer edge to next vertex run statement
                 if (distanceMap.get(current) + current.getOutEdges().get(j).distance < distanceMap.get(current.getOutEdges().get(j).getTovertex())) {
@@ -107,7 +107,7 @@ public class Graph {
 
         // Dijkstra's algorithm for shortest distance
         for (int i = 0; i < timeMap.size(); i++) {
-            Vertex current = getMin(t);
+            Vertex current = getMinimum(t);
             for (int j = 0; j < current.getOutEdges().size(); j++) {
                 // is the distance smaller than the next distance update the maps
                 if (timeMap.get(current) + current.getOutEdges().get(j).time < timeMap.get(current.getOutEdges().get(j).getTovertex())) {
@@ -126,7 +126,7 @@ public class Graph {
     }
 
 
-    public Vertex getMin(Map<Vertex, Integer> tMinMap) {
+    public Vertex getMinimum(Map<Vertex, Integer> tMinMap) {
         //Create a map entry
         Map.Entry<Vertex, Integer> min = null;
 
