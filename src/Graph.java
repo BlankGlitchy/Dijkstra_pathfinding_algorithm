@@ -2,6 +2,11 @@ import java.util.*;
 
 import javafx.util.Pair;
 
+/***
+ * @Author Morten Jensen
+ * Portfolio 3, SD exam
+ */
+
 public class Graph {
     private ArrayList<Vertex> Vertices = new ArrayList<>();
 
@@ -23,55 +28,66 @@ public class Graph {
         return null;
     }
 
-    public void newEdge(Vertex from, Vertex to, int dist, int tim) {
+    // Creating a new edge with two parameters "dist" + "time"
+    public void newEdge(Vertex from, Vertex to, int dist, int time) {
         Edge newedge = new Edge(from, to);
         newedge.distance = dist;
-        newedge.time = tim;
+        newedge.time = time;
     }
+
+    // Creating a new edge, but only with one parameter "dist"
     public void newEdgeBig(Vertex from, Vertex to, int dist) {
         Edge newEdgeBig = new Edge(from, to);
         newEdgeBig.distance = dist;
     }
 
+    // Creating a pair witch takes a Integer and a map witch takes two vertices
     public Pair<Integer, Map<Vertex, Vertex>> ShortestDistance(Vertex source, Vertex end) {
         Map<Vertex, Vertex> PredecessorMap = new HashMap<>();
-        Map<Vertex, Integer> DistanceMap = new HashMap<>();
+        Map<Vertex, Integer> distanceMap = new HashMap<>();
         Map<Vertex, Integer> t = new HashMap<>();
 
 
         // initialize arrays
         for (Vertex v : Vertices) {
-            DistanceMap.put(v, 1000);
+            distanceMap.put(v, 1000);
             PredecessorMap.put(v, null);
             t.put(v, 1000);
         }
-        // Edges
-        DistanceMap.put(source, 0);
-        // Vertices - Functions as handled
+        // sets the source to zero - is the edges
+        distanceMap.put(source, 0);
+        // same in t. t functions as a handled funvtion of the verticies
         t.put(source, 0);
 
 
         // Dijkstra's algorithm for shortest distance
         for (int i = 0; i < Vertices.size(); i++) {
+            // Use the function getMin on t map
             Vertex current = getMin(t);
             for (int j = 0; j < current.getOutEdges().size(); j++) {
-                // is the distance smaller than the next distance update the maps
-                if (DistanceMap.get(current) + current.getOutEdges().get(j).distance < DistanceMap.get(current.getOutEdges().get(j).getTovertex())) {
+                // takes the current and the current outdeges and multiply if that is smaller than the outer edge to next vertex run statement
+                if (distanceMap.get(current) + current.getOutEdges().get(j).distance < distanceMap.get(current.getOutEdges().get(j).getTovertex())) {
 
-                    // Updates the distance map
-                    DistanceMap.put(current.getOutEdges().get(j).getTovertex(), DistanceMap.get(current) + current.getOutEdges().get(j).distance);
-                    // Update the t map
-                    t.put(current.getOutEdges().get(j).getTovertex(), DistanceMap.get(current) + current.getOutEdges().get(j).distance);
-                    // update the Predecessor map
+                    // Updates the distance map - with current vertex and current out edge distance
+                    distanceMap.put(current.getOutEdges().get(j).getTovertex(), distanceMap.get(current) + current.getOutEdges().get(j).distance);
+
+                    // Update the t map - with current vertex and current out edge distance
+                    t.put(current.getOutEdges().get(j).getTovertex(), distanceMap.get(current) + current.getOutEdges().get(j).distance);
+
+                    // update the Predecessor map - with the last vertex we were at
                     PredecessorMap.put(current.getOutEdges().get(j).getTovertex(), current);
                 }
             }
+            // remove current from t
             t.remove(current);
         }
-        return (new Pair<Integer, Map<Vertex, Vertex>>(DistanceMap.get(end), PredecessorMap));
+        // Return the pair
+        return (new Pair<Integer, Map<Vertex, Vertex>>(distanceMap.get(end), PredecessorMap));
     }
 
+    // Creating a pair witch takes a Integer and a map witch takes two vertices
     public Pair<Integer, Map<Vertex, Vertex>> ShortestTime(Vertex source, Vertex end) {
+        // create objects of the maps
         Map<Vertex, Vertex> PredecessorMapTime = new HashMap<>();
         Map<Vertex, Integer> timeMap = new HashMap<>();
         Map<Vertex, Integer> t = new HashMap<>();
@@ -83,9 +99,10 @@ public class Graph {
             PredecessorMapTime.put(v, null);
             t.put(v, 1000);
         }
-        // Edges
+        // sets the source to zero - is the edges
         timeMap.put(source, 0);
-        // Vertices - Functions as handled
+
+        // same in t. t functions as a handled funvtion of the verticies
         t.put(source, 0);
 
         // Dijkstra's algorithm for shortest distance
@@ -113,9 +130,10 @@ public class Graph {
         //Create a map entry
         Map.Entry<Vertex, Integer> min = null;
 
-
+        // foreach map entry in tMinMap entryset run the if statement
         for (Map.Entry<Vertex, Integer> entry : tMinMap.entrySet()
         ) {
+            // is min == null or min value is bigger than entry value sets min equals to entry and return min key
             if (min == null || min.getValue() > entry.getValue()) {
                 min = entry;
             }
